@@ -1,0 +1,369 @@
+openapi: 3.1.0
+info:
+  title: Oriana ERP - Auth API
+  version: 1.0.0
+  description:
+    "API de autenticación y sesión para Oriana ERP. Emite tokens JWT (access) y tokens de refresco para acceder
+    a APIs protegidas.
+
+
+    **Multi-tenant**: la mayoría de operaciones se ejecutan en el contexto de una propiedad (`hotel.property.id`).
+
+    Por consistencia con el resto de APIs del ERP, este contexto se envía en el header `X-Property-Id`.
+
+
+    Nota: `/auth/login`, `/auth/refresh` y `/auth/logout` son endpoints públicos y **no requieren** `Authorization` ni `X-Property-Id`."
+  contact:
+    name: Oriana ERP
+    email: support@oriana.hotel.erp
+  license:
+    name: Proprietary
+servers:
+  - url: /api/v1
+tags:
+  - name: auth
+    description: Autenticación, emisión de tokens y finalización de sesión.
+  - name: sessions
+    description: Sesión actual y datos del usuario autenticado.
+security: []
+paths:
+  /auth/login:
+    post:
+      tags:
+        - auth
+      operationId: login
+      summary: Iniciar sesión
+      description:
+        "Valida las credenciales del usuario (`security.user_account`) y emite un **access token** (JWT) y un **refresh
+        token**.
+
+
+        - El `accessToken` se envía en `Authorization: Bearer <token>` para consumir APIs protegidas.
+
+        - El `refreshToken` sirve para renovar el access token sin volver a ingresar credenciales."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+            examples:
+              basic:
+                summary: Credenciales
+                value:
+                  username: admin
+                  password: admin123
+      responses:
+        "200":
+          description: Tokens emitidos correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenPairResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        "423":
+          $ref: "#/components/responses/LockedError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      security: []
+  /auth/refresh:
+    post:
+      tags:
+        - auth
+      operationId: refreshToken
+      summary: Refrescar access token
+      description:
+        "Emite un nuevo `accessToken` a partir de un `refreshToken` válido.
+
+
+        Recomendación de seguridad: usar **refresh token rotation** y revocar el refresh token
+
+        ante sospecha de compromiso o cierre de sesión."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RefreshRequest"
+      responses:
+        "200":
+          description: Nuevo par de tokens.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TokenPairResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      security: []
+  /auth/logout:
+    post:
+      tags:
+        - auth
+      operationId: logout
+      summary: Cerrar sesión
+      description: Invalida el `refreshToken` (y cualquier sesión asociada, según la estrategia de implementación).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LogoutRequest"
+      responses:
+        "204":
+          description: Sesión finalizada.
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+      security: []
+  /auth/me:
+    get:
+      tags:
+        - sessions
+      operationId: getCurrentUser
+      summary: Obtener usuario actual
+      description:
+        "Devuelve información del usuario autenticado y sus roles en la propiedad actual.
+
+        El usuario se identifica a partir del access token JWT enviado en el header Authorization.
+
+        "
+      parameters:
+        - $ref: "#/components/parameters/XPropertyId"
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Datos del usuario autenticado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    XPropertyId:
+      name: X-Property-Id
+      in: header
+      required: true
+      description: Identificador de la propiedad (hotel.property.id) para contexto multi-sede.
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+  schemas:
+    LoginRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          minLength: 1
+          maxLength: 50
+          description: Nombre de usuario.
+        password:
+          type: string
+          minLength: 1
+          format: password
+          description: Contraseña en texto plano (solo en tránsito por TLS).
+    RefreshRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          minLength: 20
+          description: Token de refresco previamente emitido.
+    LogoutRequest:
+      type: object
+      additionalProperties: false
+      required:
+        - refreshToken
+      properties:
+        refreshToken:
+          type: string
+          minLength: 20
+          description: Refresh token a invalidar.
+    TokenPairResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - accessToken
+        - tokenType
+        - expiresIn
+      properties:
+        accessToken:
+          type: string
+          description: JWT para autenticación en APIs protegidas.
+        refreshToken:
+          type:
+            - string
+            - "null"
+          description: Token de refresco (puede omitirse si se entrega por cookie httpOnly).
+        tokenType:
+          type: string
+          const: Bearer
+          description: Tipo de token para el header Authorization.
+        expiresIn:
+          type: integer
+          minimum: 1
+          description: Tiempo de vida del access token en segundos.
+        scope:
+          type:
+            - string
+            - "null"
+          description: Scopes/claims relevantes (si aplica).
+        issuedAt:
+          type: string
+          format: date-time
+          description: Fecha/hora de emisión.
+    MeResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - user
+        - roles
+        - propertyId
+      properties:
+        propertyId:
+          type: integer
+          format: int64
+          minimum: 1
+          description: Propiedad actual.
+        user:
+          $ref: "#/components/schemas/UserSummary"
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoleSummary"
+    UserSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - id
+        - username
+        - isActive
+        - personId
+      properties:
+        id:
+          type: integer
+          format: int64
+          minimum: 1
+          description: security.user_account.id
+        username:
+          type: string
+          maxLength: 50
+        isActive:
+          type: boolean
+        personId:
+          type: integer
+          format: int64
+          minimum: 1
+          description: core.person.id asociado a la cuenta.
+    RoleSummary:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - name
+      properties:
+        code:
+          type: string
+          maxLength: 20
+          pattern: ^[A-Z][A-Z0-9_]*$
+          description: security.role.code
+        name:
+          type: string
+          maxLength: 50
+        description:
+          type:
+            - string
+            - "null"
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - timestamp
+        - traceId
+      properties:
+        code:
+          type: string
+          description: Código de error estable (ej. VALIDATION_FAILED).
+        message:
+          type: string
+          description: Mensaje legible para humanos.
+        details:
+          type:
+            - object
+            - "null"
+          additionalProperties: true
+          description: Información adicional (no sensible).
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+          description: Identificador de trazabilidad para soporte/observabilidad.
+  responses:
+    ErrorResponse:
+      description: Error estándar.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            validationFailed:
+              value:
+                code: VALIDATION_FAILED
+                message: La solicitud no cumple con las reglas de validación.
+                details:
+                  field: example
+                  reason: must not be null
+                timestamp: "2026-02-05T22:00:00-05:00"
+                traceId: 01J...
+    UnauthorizedError:
+      description: No autenticado o credenciales inválidas.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            invalidCredentials:
+              value:
+                code: AUTH_INVALID_CREDENTIALS
+                message: Credenciales inválidas.
+                details: null
+                timestamp: "2026-02-05T22:00:00-05:00"
+                traceId: 01J...
+    LockedError:
+      description: Cuenta deshabilitada o bloqueada.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            inactive:
+              value:
+                code: AUTH_ACCOUNT_INACTIVE
+                message: La cuenta está inactiva.
+                details: null
+                timestamp: "2026-02-05T22:00:00-05:00"
+                traceId: 01J...
