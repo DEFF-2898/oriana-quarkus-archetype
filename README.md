@@ -82,7 +82,16 @@ Esto registra el arquetipo en tu repositorio local.
 ### 🔹 Generar un nuevo proyecto desde el arquetipo
 
 ```bash
-mvn archetype:generate   -DarchetypeCatalog=local   -DarchetypeGroupId=com.oriana.archetypes   -DarchetypeArtifactId=oriana-quarkus-archetype   -DarchetypeVersion=1.0.0-SNAPSHOT   -DgroupId=erp.hotel.oriana   -DartifactId=oriana-quarkus-service   -Dversion=0.1.0-SNAPSHOT   -Dpackage=erp.hotel.oriana.service   -DinteractiveMode=false
+mvn archetype:generate \
+  -DarchetypeCatalog=local \
+  -DarchetypeGroupId=com.oriana.archetypes \
+  -DarchetypeArtifactId=oriana-quarkus-archetype \
+  -DarchetypeVersion=1.0.0-SNAPSHOT \
+  -DgroupId=erp.hotel.oriana \
+  -DartifactId=oriana-quarkus-service-template \
+  -Dversion=0.1.0-SNAPSHOT \
+  -Dpackage=erp.hotel.oriana.template \
+  -DinteractiveMode=false
 ```
 
 ---
