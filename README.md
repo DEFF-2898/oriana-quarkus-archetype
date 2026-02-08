@@ -90,7 +90,7 @@ mvn archetype:generate \
   -DgroupId=erp.hotel.oriana \
   -DartifactId=oriana-quarkus-service-template \
   -Dversion=0.1.0-SNAPSHOT \
-  -Dpackage=erp.hotel.oriana.template \
+  -Dpackage=erp.hotel.oriana \
   -DinteractiveMode=false
 ```
 
