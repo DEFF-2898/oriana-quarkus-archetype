@@ -1,4 +1,4 @@
-package erp.hotel.oriana.template;
+package erp.hotel.oriana;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;

@@ -1,0 +1,932 @@
+openapi: 3.1.0
+info:
+  title: Oriana ERP - Catalog API
+  version: 1.2.0
+  description: API de catálogos de referencia. Provee listas de valores usados por otras APIs.
+  contact:
+    name: Oriana ERP
+    email: support@oriana.hotel.erp
+  license:
+    name: Proprietary
+servers:
+  - url: /api/v1
+tags:
+  - name: catalog
+    description: Operaciones de catálogos reutilizables (listas maestras) para el ERP.
+security:
+  - bearerAuth: []
+paths:
+  /catalog/person-types:
+    get:
+      tags:
+        - catalog
+      operationId: listPersonTypes
+      summary: Listar tipos de persona
+      description: Devuelve los tipos de persona soportados por el sistema.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PersonTypeListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/document-types:
+    get:
+      tags:
+        - catalog
+      operationId: listDocumentTypes
+      summary: Listar tipos de documento
+      description: Devuelve los tipos de documentos oficiales aceptados por el sistema.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DocumentTypeListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/genders:
+    get:
+      tags:
+        - catalog
+      operationId: listGenders
+      summary: Listar géneros
+      description: Devuelve los valores de género definidos en el sistema.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GenderListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/departments:
+    get:
+      tags:
+        - catalog
+      operationId: listDepartments
+      summary: Listar departamentos
+      description: Devuelve los departamentos organizacionales del hotel.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DepartmentListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/employee-statuses:
+    get:
+      tags:
+        - catalog
+      operationId: listEmployeeStatuses
+      summary: Listar estados laborales
+      description: Devuelve los estados laborales posibles de un empleado.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmployeeStatusListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/contract-types:
+    get:
+      tags:
+        - catalog
+      operationId: listContractTypes
+      summary: Listar tipos de contrato
+      description: Devuelve los tipos de contrato laboral soportados.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContractTypeListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/job-positions:
+    get:
+      tags:
+        - catalog
+      operationId: listJobPositions
+      summary: Listar cargos
+      description: Devuelve las posiciones o cargos funcionales existentes.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/JobPositionListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/countries:
+    get:
+      tags:
+        - catalog
+      operationId: listCountries
+      summary: Listar países
+      description: Devuelve el listado de países soportados por el sistema.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CountryListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/currencies:
+    get:
+      tags:
+        - catalog
+      operationId: listCurrencies
+      summary: Listar monedas
+      description: Devuelve las monedas soportadas por el sistema.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CurrencyListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/room-statuses:
+    get:
+      tags:
+        - catalog
+      operationId: listRoomStatuses
+      summary: Listar estados de habitación
+      description: Devuelve los estados posibles de una habitación.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoomStatusListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/reservation-statuses:
+    get:
+      tags:
+        - catalog
+      operationId: listReservationStatuses
+      summary: Listar estados de reserva
+      description: Devuelve los estados definidos para una reserva.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReservationStatusListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/stay-statuses:
+    get:
+      tags:
+        - catalog
+      operationId: listStayStatuses
+      summary: Listar estados de estadía
+      description: Devuelve los estados posibles de una estadía.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StayStatusListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/payment-methods:
+    get:
+      tags:
+        - catalog
+      operationId: listPaymentMethods
+      summary: Listar métodos de pago
+      description: Devuelve los métodos de pago aceptados por el sistema.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaymentMethodListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/service-categories:
+    get:
+      tags:
+        - catalog
+      operationId: listServiceCategories
+      summary: Listar categorías de servicio
+      description: Devuelve las categorías de servicios cobrables.
+      parameters: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceCategoryListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /catalog/services:
+    get:
+      tags:
+        - catalog
+      operationId: listServices
+      summary: Listar servicios
+      description: Devuelve los servicios cobrables del sistema, usados en pricing y billing. Puede incluir su categoría asociada.
+      parameters:
+        - name: includeCategory
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: false
+          description: Si es true, incluye el objeto category en cada servicio.
+        - name: active
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Filtra por is_active (true/false).
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ServiceListResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    CatalogItem:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+          minimum: 1
+        code:
+          type: string
+        name:
+          type: string
+        description:
+          type:
+            - string
+            - "null"
+        isActive:
+          type: boolean
+      required:
+        - id
+        - code
+        - name
+        - isActive
+    PersonTypeCode:
+      type: string
+      enum:
+        - NATURAL
+        - LEGAL
+      description: catalog.person_type.code
+    DocumentTypeCode:
+      type: string
+      enum:
+        - DNI
+        - PASSPORT
+        - CE
+        - RUC
+      description: catalog.document_type.code
+    GenderCode:
+      type: string
+      enum:
+        - M
+        - F
+        - O
+        - N
+      description: catalog.gender.code
+    DepartmentCode:
+      type: string
+      enum:
+        - ADMIN
+        - RECEPTION
+        - HOUSEKEEPING
+        - MAINTENANCE
+        - SALES
+        - FINANCE
+        - IT
+        - SECURITY
+      description: catalog.department.code
+    EmployeeStatusCode:
+      type: string
+      enum:
+        - ACTIVE
+        - INACTIVE
+        - ON_LEAVE
+        - SUSPENDED
+        - TERMINATED
+      description: catalog.employee_status.code
+    ContractTypeCode:
+      type: string
+      enum:
+        - INDEFINITE
+        - FIXED_TERM
+        - PART_TIME
+        - TEMPORARY
+        - INTERNSHIP
+        - SERVICE
+      description: catalog.contract_type.code
+    JobPositionCode:
+      type: string
+      enum:
+        - ADMIN
+        - RECEPTIONIST
+        - HOUSEKEEPING
+        - MAINTENANCE
+      description: catalog.job_position.code
+    RoomStatusCode:
+      type: string
+      enum:
+        - AVAILABLE
+        - OCCUPIED
+        - CLEANING
+        - MAINTENANCE
+        - OUT_OF_SERVICE
+      description: catalog.room_status.code
+    ReservationStatusCode:
+      type: string
+      enum:
+        - CREATED
+        - CONFIRMED
+        - CANCELLED
+        - NO_SHOW
+        - CHECKED_IN
+      description: catalog.reservation_status.code
+    StayStatusCode:
+      type: string
+      enum:
+        - ACTIVE
+        - CLOSED
+        - CANCELLED
+      description: catalog.stay_status.code
+    PaymentMethodCode:
+      type: string
+      enum:
+        - CASH
+        - CARD
+        - TRANSFER
+        - YAPE
+        - PLIN
+      description: catalog.payment_method.code
+    ServiceCategoryCode:
+      type: string
+      enum:
+        - ROOM
+        - FOOD
+        - SPA
+        - LAUNDRY
+        - TRANSPORT
+        - EXTRA
+      description: catalog.service_category.code
+    ServiceCode:
+      type: string
+      enum:
+        - ROOM_NIGHT
+        - EARLY_CHECKIN
+        - LATE_CHECKOUT
+        - BREAKFAST
+        - MINIBAR
+        - SPA
+        - LAUNDRY
+        - TRANSPORT
+        - PENALTY
+      description: catalog.service.code
+    CurrencyCode:
+      type: string
+      enum:
+        - USD
+        - EUR
+        - MXN
+        - ARS
+        - CLP
+        - COP
+        - PEN
+        - BRL
+        - GBP
+        - JPY
+        - CNY
+        - CAD
+        - AUD
+        - CHF
+        - INR
+      description: catalog.currency.code (ISO 4217)
+    CountryIsoAlpha2:
+      type: string
+      enum:
+        - AR
+        - BR
+        - CL
+        - CO
+        - MX
+        - PE
+        - ES
+        - US
+        - CA
+        - FR
+        - DE
+        - IT
+        - GB
+        - JP
+        - AU
+      description: catalog.country.iso_alpha2 (ISO 3166-1 alpha-2)
+    PersonType:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/PersonTypeCode"
+    DocumentType:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/DocumentTypeCode"
+    Gender:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/GenderCode"
+    Department:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/DepartmentCode"
+    EmployeeStatus:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/EmployeeStatusCode"
+    ContractType:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/ContractTypeCode"
+    JobPosition:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/JobPositionCode"
+    RoomStatus:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/RoomStatusCode"
+    ReservationStatus:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/ReservationStatusCode"
+    StayStatus:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/StayStatusCode"
+    PaymentMethod:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/PaymentMethodCode"
+    ServiceCategory:
+      allOf:
+        - $ref: "#/components/schemas/CatalogItem"
+        - type: object
+          additionalProperties: false
+          properties:
+            code:
+              $ref: "#/components/schemas/ServiceCategoryCode"
+    Currency:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+          minimum: 1
+        code:
+          $ref: "#/components/schemas/CurrencyCode"
+        name:
+          type: string
+        symbol:
+          type:
+            - string
+            - "null"
+          maxLength: 8
+        isActive:
+          type: boolean
+      required:
+        - id
+        - code
+        - name
+        - isActive
+    Country:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+          minimum: 1
+        name:
+          type: string
+        isoAlpha2:
+          $ref: "#/components/schemas/CountryIsoAlpha2"
+        numericCode:
+          type:
+            - integer
+            - "null"
+        phoneCode:
+          type:
+            - string
+            - "null"
+        flagUrl:
+          type:
+            - string
+            - "null"
+          format: uri
+        isActive:
+          type: boolean
+      required:
+        - id
+        - name
+        - isoAlpha2
+        - isActive
+    Service:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+          minimum: 1
+        code:
+          $ref: "#/components/schemas/ServiceCode"
+        name:
+          type: string
+        description:
+          type:
+            - string
+            - "null"
+        categoryId:
+          type: integer
+          format: int32
+          minimum: 1
+        category:
+          anyOf:
+            - $ref: "#/components/schemas/ServiceCategory"
+            - type: "null"
+        isActive:
+          type: boolean
+      required:
+        - id
+        - code
+        - name
+        - categoryId
+        - isActive
+    PersonTypeListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PersonType"
+      required:
+        - items
+    DocumentTypeListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/DocumentType"
+      required:
+        - items
+    GenderListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Gender"
+      required:
+        - items
+    DepartmentListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Department"
+      required:
+        - items
+    EmployeeStatusListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/EmployeeStatus"
+      required:
+        - items
+    ContractTypeListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContractType"
+      required:
+        - items
+    JobPositionListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/JobPosition"
+      required:
+        - items
+    CountryListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Country"
+      required:
+        - items
+    CurrencyListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Currency"
+      required:
+        - items
+    RoomStatusListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/RoomStatus"
+      required:
+        - items
+    ReservationStatusListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReservationStatus"
+      required:
+        - items
+    StayStatusListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/StayStatus"
+      required:
+        - items
+    PaymentMethodListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PaymentMethod"
+      required:
+        - items
+    ServiceCategoryListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ServiceCategory"
+      required:
+        - items
+    ServiceListResponse:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/Service"
+      required:
+        - items
+    ErrorResponse:
+      type: object
+      additionalProperties: false
+      required:
+        - code
+        - message
+        - timestamp
+        - traceId
+      properties:
+        code:
+          type: string
+          description: Código de error estable (ej. VALIDATION_FAILED).
+        message:
+          type: string
+          description: Mensaje legible para humanos.
+        details:
+          type:
+            - object
+            - "null"
+          additionalProperties: true
+          description: Información adicional (no sensible).
+        timestamp:
+          type: string
+          format: date-time
+        traceId:
+          type: string
+          description: Identificador de trazabilidad para soporte/observabilidad.
+  responses:
+    Unauthorized:
+      description: No autenticado/No autorizado.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    InternalServerError:
+      description: Error inesperado.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+    ErrorResponse:
+      description: Error estándar.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+          examples:
+            validationFailed:
+              value:
+                code: VALIDATION_FAILED
+                message: La solicitud no cumple con las reglas de validación.
+                details:
+                  field: example
+                  reason: must not be null
+                timestamp: "2026-02-05T22:00:00-05:00"
+                traceId: 01J...
+  parameters:
+    XPropertyId:
+      name: X-Property-Id
+      in: header
+      required: true
+      description: Identificador de la propiedad (hotel.property.id) para contexto multi-sede.
+      schema:
+        type: integer
+        format: int64
+        minimum: 1

@@ -114,6 +114,45 @@
           </systemPropertyVariables>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.openapitools</groupId>
+        <artifactId>openapi-generator-maven-plugin</artifactId>
+        <version>7.7.0</version>
+        <executions>
+          <execution>
+            <id>generate-openapi</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+            <configuration>
+              <inputSpec>src/main/resources/openapi/contracts/catalog-api.openapi.yaml</inputSpec>
+
+              <generatorName>jaxrs-spec</generatorName>
+
+              <apiPackage>erp.hotel.oriana.api</apiPackage>
+              <modelPackage>erp.hotel.oriana.model</modelPackage>
+
+              <configOptions>
+                <interfaceOnly>true</interfaceOnly>
+                <useJakartaEe>true</useJakartaEe>
+                <useBeanValidation>true</useBeanValidation>
+                <dateLibrary>java8</dateLibrary>
+              </configOptions>
+
+              <generateApiTests>false</generateApiTests>
+              <generateModelTests>false</generateModelTests>
+              <generateSupportingFiles>false</generateSupportingFiles>
+
+              <addCompileSourceRoot>true</addCompileSourceRoot>
+              <cleanupOutput>true</cleanupOutput>
+
+              <output>${project.build.directory}/generated-sources/openapi/catalog-api</output>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
 

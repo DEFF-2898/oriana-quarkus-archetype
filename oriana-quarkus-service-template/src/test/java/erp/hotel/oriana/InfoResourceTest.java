@@ -1,4 +1,4 @@
-package erp.hotel.oriana.template;
+package erp.hotel.oriana;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;
