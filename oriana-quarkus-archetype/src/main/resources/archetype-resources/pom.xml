@@ -25,8 +25,6 @@
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
 
         <openapi.generated.dir>${project.build.directory}/generated-sources/openapi</openapi.generated.dir>
-
-        <failsafe-plugin.version>3.5.2</failsafe-plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -191,26 +189,8 @@
                         </goals>
                         <configuration>
                             <sources>
-                                <source>${openapi.generated.dir}/inbound/src/main/java</source>
+                                <source>${openapi.generated.dir}/inbound/src/gen/java</source>
                             </sources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
-                <version>${failsafe-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>integration-test</goal>
-                            <goal>verify</goal>
-                        </goals>
-                        <configuration>
-                            <systemPropertyVariables>
-                                <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-                            </systemPropertyVariables>
                         </configuration>
                     </execution>
                 </executions>
