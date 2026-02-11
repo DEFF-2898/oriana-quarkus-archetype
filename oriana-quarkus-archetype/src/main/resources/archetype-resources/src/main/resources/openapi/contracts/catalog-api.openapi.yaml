@@ -8,6 +8,7 @@ info:
     email: support@oriana.hotel.erp
   license:
     name: Proprietary
+    identifier: UNLICENSED
 servers:
   - url: /api/v1
 tags:
