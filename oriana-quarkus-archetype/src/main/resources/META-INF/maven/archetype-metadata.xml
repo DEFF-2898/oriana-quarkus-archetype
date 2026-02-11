@@ -12,6 +12,13 @@
   </requiredProperties>
 
   <fileSets>
+    <fileSet>
+      <directory></directory>
+      <includes>
+        <include>gitignore</include>
+      </includes>
+    </fileSet>
+
     <fileSet filtered="true" packaged="true">
       <directory>src/main/java</directory>
       <includes>

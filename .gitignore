@@ -12,6 +12,7 @@
 
 # Maven
 target/
+oriana-quarkus-archetype/target/
 
 # Package Files #
 *.jar
