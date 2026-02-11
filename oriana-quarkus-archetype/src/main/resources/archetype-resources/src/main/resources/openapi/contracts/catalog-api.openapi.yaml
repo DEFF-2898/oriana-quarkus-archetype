@@ -883,7 +883,6 @@ components:
         details:
           type:
             - object
-            - "null"
           additionalProperties: true
           description: Información adicional (no sensible).
         timestamp:
