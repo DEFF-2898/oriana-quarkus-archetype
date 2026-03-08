@@ -23,6 +23,7 @@
 
         <openapi-generator.version>7.7.0</openapi-generator.version>
         <jackson-databind-nullable.version>0.2.6</jackson-databind-nullable.version>
+        <spotbugs-annotations.version>4.8.6</spotbugs-annotations.version>
 
         <openapi.generated.dir>${project.build.directory}/generated-sources/openapi</openapi.generated.dir>
     </properties>
@@ -106,6 +107,14 @@
             <artifactId>rest-assured</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- Static analysis -->
+        <dependency>
+            <groupId>com.github.spotbugs</groupId>
+            <artifactId>spotbugs-annotations</artifactId>
+            <version>${spotbugs-annotations.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -156,11 +165,13 @@
                             <modelPackage>erp.hotel.oriana.inbound.model</modelPackage>
 
                             <configOptions>
+                                <useTags>true</useTags>
                                 <interfaceOnly>true</interfaceOnly>
                                 <useJakartaEe>true</useJakartaEe>
                                 <useBeanValidation>true</useBeanValidation>
                                 <useSwaggerAnnotations>false</useSwaggerAnnotations>
                                 <dateLibrary>java8</dateLibrary>
+                                <returnResponse>true</returnResponse>
                             </configOptions>
 
                             <generateApiTests>false</generateApiTests>
@@ -192,6 +203,28 @@
                                 <source>${openapi.generated.dir}/inbound/src/gen/java</source>
                             </sources>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- Static analysis (local-friendly) -->
+            <plugin>
+                <groupId>com.github.spotbugs</groupId>
+                <artifactId>spotbugs-maven-plugin</artifactId>
+                <version>4.8.6.6</version>
+                <configuration>
+                    <effort>Max</effort>
+                    <threshold>Low</threshold>
+                    <failOnError>true</failOnError>
+                    <excludeFilterFile>${project.basedir}/config/spotbugs/exclude.xml</excludeFilterFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>spotbugs</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

@@ -1,4 +1,4 @@
-package ${package};
+package erp.hotel.oriana.api;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -15,7 +15,7 @@ public class InfoResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String, Object> info() {
         return Map.of(
-                "service", "${artifactId}",
+                "service", "oriana-quarkus-service-template",
                 "time", OffsetDateTime.now().toString()
         );
     }
